@@ -1,0 +1,31 @@
+Log into atlas6 in MobaXterm Personal Edition	
+"input password (Dun fret if nothing comes out, just type in password and press enter)"	
+	
+create an anaconda environment if necessary 	use module load miniconda first
+"Download all the requried modules. E.g. conda install pandas, Bio.seq, numpy, scikit learn etc"	
+	
+Activate conda environment: 	
+[e0543831@atlas6-c01 ~]$ module load miniconda	
+[e0543831@atlas6-c01 ~]$ conda activate RFC	
+(RFC) [e0543831@atlas6-c01 ~]$	
+	
+Change directory to folder where PBS script is located	
+(RFC) [e0543831@atlas6-c01 ~]$ cd 'ML'	
+(RFC) [e0543831@atlas6-c01 ML]$ ls	ls shows what is in the current folder
+PBS_Script_1.txt                                             Test 1	
+PBS.txt                                                      Test fails	
+RandomForest_all_cnfsnmatrix_CV_Feature Selection Test 2.py	
+	
+CHECK IF PBS SCRIPT IS IN DOS MODE ANOT	cat -v PBS.txt
+if got the -M behind each line means wrong liao	
+do correct this use the following code: dos2unix PBS.txt	
+	
+"CHECK PBS script if it is running the file u want, e.g. the .py file or the conda activate env"	
+"choose the correct parallel12 or parallel24, depending on which atlas is used. Change walltime if needed"	
+	
+qsub PBS.txt	sends the script to the server
+qstat -x	looks at the job status if it is running or queuing or failed
+	
+"If got an error of cannot find the conda env,"	
+input the full file directory into conda activate. E.g  conda activate /home/svu/e0543831/conda_envs/DL	
+the bash things must be on top of conda activate	
