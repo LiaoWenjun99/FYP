@@ -4,7 +4,7 @@
 # In[1]:
 
 
-#importing libraries
+# This .py file is a repeat of RFC, but used to test mutple training set
 
 import sys
 import pandas as pd
