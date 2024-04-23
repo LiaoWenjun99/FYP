@@ -28,7 +28,9 @@ device = torch.device("cuda")
 # In[3]:
 
 
-# Cell 3: Load the model
+### Cell 3: Load the model. TO use this, it is important to download
+### the InstaDeepAI folder available here: https://huggingface.co/InstaDeepAI/nucleotide-transformer-500m-human-ref/tree/main
+
 num_class = 3
 model = AutoModelForSequenceClassification.from_pretrained("/hpctmp/e0543831/GPU/InstaDeepAI", num_labels=num_class)
 model = model.to(device)
@@ -147,6 +149,11 @@ tokenized_test_dataset = test_dataset.map(
 
 # In[11]:
 
+### Define hyperparameters and model name to save in
+### Models were trained with different Batch size from 6 to 256. from 128 onwards got memory error
+### Max_steps determines the number of training regardless of whether the epochs is met
+### logging steps just saves the models at the points stated and at the end, the model with the best score will be used
+### able to change metric for best model to be F1-score. just need to define function
 
 # In [11]:
 batch_size = 64
@@ -268,6 +275,7 @@ model.save_pretrained(output_dir)
 
 # In[ ]:
 
+### THIS SECTION ONWARDS CAN BE COMMENTED OUT IF PREDICTION OR TESTING IS NOT REQUIRED ###
 
 # Load the saved tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(output_dir)
@@ -277,7 +285,7 @@ model = AutoModelForSequenceClassification.from_pretrained(output_dir)
 # In[ ]:
 
 
-# Load the data, either FNS from Jingyun or Generated from Sangeetha
+# Load the data, either FNS from Jingyun (known as EXP2 in paper) or Generated from Sangeetha
 
 FNS_dataframe = pd.read_csv('FNS Sequences for ML model validation.csv')
 # FNS_dataframe = pd.read_csv('Sangeetha_Seq_for_verification.csv')
@@ -336,6 +344,7 @@ print("Percentage of correct predictions using Jing Yun's Data: " + str(Correct_
 
 # In[ ]:
 
+### Predicting test set from the start ###
 
 predict = trainer.predict(tokenized_test_dataset)
 prediction = []
@@ -348,7 +357,7 @@ predicted_labels = [class_mapping[idx] for idx in prediction]
 predicted_labels_series = pd.Series(predicted_labels, name='Predicted_Labels')
 
 
-new_data_with_predictions = pd.concat([FNS_samples, predicted_labels_series], axis=1)
+##new_data_with_predictions = pd.concat([FNS_samples, predicted_labels_series], axis=1)
 
 
 

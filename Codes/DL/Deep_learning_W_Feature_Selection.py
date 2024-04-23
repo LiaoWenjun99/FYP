@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 23 11:24:09 2024
-
-@author: Wenjun
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Fri Nov  3 14:46:45 2023
 
 @author: Wenjun
 """
+### Import relevant libraries
 import tensorflow as tf
 from tensorflow import keras
 import sys
@@ -18,10 +12,12 @@ import pandas as pd
 import numpy as np
 import time
 
+### State number of features for feature selection and title
 features = '500'
-title = 'adam_3_layers_Feat_Sel_' + features 
-print('Importing necessary python libraries...')
+title = 'adam_3_layers_Feat_Sel_' + features
+
 ### Importing in data ###
+print('Importing necessary python libraries...')
 
 start_import_time = time.time() 
 samples_dataframe_H = pd.read_csv('data_H.csv',names = ['0'])
@@ -48,7 +44,7 @@ num_random_rows = 420000
 #M_rand = samples_dataframe_M[0:num_random_rows]
 #L_rand = samples_dataframe_L[0:num_random_rows]
 
-
+### Extract random rows and remove those with N
 H_rand = samples_dataframe_H.sample(n=num_random_rows)
 H_rand = H_rand[~H_rand['0'].str.contains('N')]
 
@@ -143,9 +139,12 @@ y_valid, y_train = y_valid.to_numpy(), y_train.to_numpy()
 class_names = ["High","Medium","Low"]
 # print("Class names example: ", class_names[y_train[0]])
 
-# Deep Learning
+### Deep Learning Feedforward Neural Network ###
 
 start_fit = time.time()
+
+### Over here, we can increase the nerual layers
+### for example to create a 3 layer model, the denomiter must be scaled accordingly
 
 model = keras.models.Sequential([
  keras.layers.Dense(len(H_ohe.columns), activation="relu"),
@@ -159,6 +158,7 @@ model = keras.models.Sequential([
 
 
 ### After a model is created, you must call its compile() method to specify the loss function and the optimizer to use. ###
+### Over here, the optimizer can be CHANGED to "sgd" for stochastic gradient descent.
 model.compile(loss="sparse_categorical_crossentropy", optimizer="adam" , metrics=["accuracy"])
 
 ### Training and Evaluating the Model ###
