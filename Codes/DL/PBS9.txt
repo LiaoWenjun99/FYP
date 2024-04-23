@@ -1,0 +1,20 @@
+#!/bin/bash
+#PBS -P Project_Deep_Learning_Amino_Acid
+#PBS -j oe
+#PBS -N DL_AA_adam_feature_selection_500
+#PBS -q parallel24
+#PBS -l select=1:ncpus=24:mem=48gb
+#PBS -l walltime=96:00:00
+
+cd $PBS_O_WORKDIR;
+np=$(cat ${PBS_NODEFILE} | wc -l);
+
+source /etc/profile.d/rec_modules.sh
+
+bash
+. ~/.bashrc
+module load miniconda
+
+conda activate /home/svu/e0543831/conda_envs/DL
+
+python Deep_Learning_AA_adam.py
